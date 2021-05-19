@@ -267,3 +267,13 @@ db.listingsAndReviews.find({
     'address.country':1
 })
 ```
+## Find by nested elements
+db.transactions.find({
+    'transactions.transaction_code':'buy'
+},{
+    'transactions': {
+        '$elemMatch': {
+            'transaction_code':'buy'
+        }
+    }
+}).pretty();
