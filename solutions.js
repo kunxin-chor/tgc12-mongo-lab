@@ -44,11 +44,43 @@ db.companies.find({
     'ipo.valuation_amount': {
         '$gt':100000000
     },
-    'ipo.valuation_currency_code': "{
+    'ipo.valuation_currency_code': {
         '$regex':'usd', '$options':'i'
-    }"
+    }
 },{
     'name':1    ,
     'ipo.valuation_amount':1,
     'ipo.valuation_currency_code':1
 }).pretty()
+
+/* Slide 2 */
+
+// 1
+db.inspections.find({
+    "result":"Violation Issued"
+},{
+    "business_name": 1,
+    "result": 1
+})
+
+// 2.
+db.inspections.find({
+    "result": "Violation Issued",
+    "address.city":"NEW YORK"
+}, {
+    "result": 1,
+    "address.city": 1
+})
+
+// 3.
+db.inspections.find({
+    'address.city':'NEW YORK'
+}).count()
+
+db.inspections.find({
+    'result': {
+        '$ne':'Violation Issued'
+    },
+    'address.city':"RIDGEWOOD"
+}).count()
+

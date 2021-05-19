@@ -277,3 +277,173 @@ db.transactions.find({
         }
     }
 }).pretty();
+
+# How to create our own database
+
+When we `use` a non-existent database, Mongo will assume that we want to create a new database
+
+```
+use animal_shelter
+```
+
+Mongo will assume the database exists. However the new database won't be saved until
+we add a new collection to do it.
+
+## How to add a collection to a database
+
+By inserting a new document to a collection, we create it.
+
+```
+db.animals.insert({
+    "name":"Fluffy",
+    "age":3,
+    "breed":"Golden Retriever",
+    "species":"Dog"
+})
+```
+
+## Insert many into a document
+
+
+```
+db.animals.insertMany([
+    {
+        'name':'Muffin',
+        'age':10,
+        'breed':'Orange Tabby',
+        'species':'Cat'
+    },
+    {
+        'name':'Carrots',
+        'age': 2.5,
+        'breed':'Bunny',
+        'species':'Bunny'
+    }
+])
+```
+
+## Hands on for insert solution
+```
+use fake_school
+
+db.students.insert({
+    'name':'Jane Doe',
+    'age':13,
+    'subjects':[
+        'Defense against the Dark Arts',
+        'Charms',
+        'History of Magic'
+    ],
+    'date_enrolled':ISODate('2016-05-13')
+})
+
+db.students.insertMany([
+    {
+        'name':'James Verses',
+        'age':14,
+        'subjects':[
+            'Transfiguration', 'Alchemy'
+        ],
+        'date_enrolled':ISODate('2015-06-15')
+    },
+    {
+        'name':'Jonathan Goh',
+        'age':12,
+        'subjects':['Divination', 'Study of Ancient Runes'],
+        'date_enrolled': ISODate('2017-04-16')
+    }
+])
+```
+
+## Update a document: PATCH
+
+Update function will match the document by the first critera, and then the second critera is what to change/add to the matched document
+```
+db.animals.update({
+    '_id':ObjectId('60a4c1cc5baac29f72a7e209')
+},{
+    '$set':{
+        'age':4,
+        'house_broken':true
+    }
+})
+```
+
+## The PUT method (aka. the Prestige method)
+```
+db.animals.update({
+    '_id':ObjectId('60a4c2eb5baac29f72a7e20b')
+},{
+    'name':'Carrots',
+    'age':2.5,
+    'breed': 'Norwegian Forest Cat',
+    'species':'Cat'
+})
+```
+
+## Update many
+
+Increase the age of all cats by 1. The updateMany function can change ALL the documents that matches
+the critera in the first parameter.
+
+```
+db.animals.updateMany({
+    'species':'Cat'
+},{
+    '$inc': {
+        'age': 1
+    }
+})
+```
+
+# Solutions
+1.
+```
+db.students.updateMany({},{
+    '$inc':{
+        'age': 1
+    }
+})
+```
+
+2.
+```
+db.students.update({
+    '_id':ObjectId('60a4c7af5baac29f72a7e20e')
+},{
+    '$set':{
+        'date_enrolled': ISODate('2018-05-14')
+    }
+})
+```
+
+3.
+```
+db.students.update({
+    '_id':ObjectId('60a4c7af5baac29f72a7e20d')
+},{
+    '$set':{
+        'age':13
+    }
+})
+```
+4.
+```
+db.students.update({
+    '_id':ObjectId('60a4c66b5baac29f72a7e20c')
+},{
+    '$set':{
+        'age':11,
+        'name':"Jane Doe Jr"
+    }
+})
+```
+
+## Delete documents
+```
+db.students.remove({
+    '_id':ObjectId('60a4c7af5baac29f72a7e20d')
+});
+```
+
+Use `deleteMany` to delete more than one
