@@ -593,8 +593,7 @@ db.animals.update({
 
 ## Only show a subset of the sub-documents
 
-## Find by nested elements
-
+For instance: show only transactions with the `buy` transaction_code
 ```
 db.transactions.find({
     'transactions.transaction_code':'buy'
